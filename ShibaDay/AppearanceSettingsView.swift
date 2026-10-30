@@ -19,16 +19,16 @@ struct AppearanceSettingsView: View {
             .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18))
             .overlay {
                 RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color("brown").opacity(0.20), lineWidth: 1)
+                    .stroke(Color("brandOrange").opacity(0.20), lineWidth: 1)
             }
-            .shadow(color: Color("brown").opacity(0.14), radius: 12, x: 0, y: 5)
+            .shadow(color: Color("brandOrange").opacity(0.14), radius: 12, x: 0, y: 5)
             .padding(.horizontal, 20)
             .padding(.top, 24)
         }
         .background(Color(uiColor: .systemBackground).ignoresSafeArea())
         .navigationTitle("Theme")
         .navigationBarTitleDisplayMode(.inline)
-        .tint(Color("brown"))
+        .tint(Color("brandOrange"))
     }
 
     private func appearanceRow(_ appearance: AppAppearance) -> some View {
@@ -51,12 +51,13 @@ struct AppearanceSettingsView: View {
                 if selection == appearance {
                     Image(systemName: "checkmark")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(Color("brown"))
+                        .foregroundStyle(Color("brandOrange"))
                 }
             }
-            .contentShape(Rectangle())
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }

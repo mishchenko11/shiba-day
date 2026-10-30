@@ -83,17 +83,19 @@ enum TaskReminderManager {
         }
 
         let now = Date()
-        var candidates: [ReminderCandidate] = []
+        var candidateGroups: [[ReminderCandidate]] = []
         if tasksEnabled {
-            candidates += tasks.flatMap { upcomingTaskReminders(for: $0, after: now) }
+            candidateGroups += tasks.map { upcomingTaskReminders(for: $0, after: now) }
         }
         if goalsEnabled {
-            candidates += goals.flatMap { upcomingGoalReminders(for: $0, after: now) }
+            candidateGroups += goals.map { upcomingGoalReminders(for: $0, after: now) }
         }
 
-        for candidate in candidates
-            .sorted(by: { $0.fireDate < $1.fireDate })
-            .prefix(maximumPendingReminders) {
+        let candidates = fairlySelectedCandidates(
+            from: candidateGroups,
+            limit: maximumPendingReminders
+        )
+        for candidate in candidates.sorted(by: { $0.fireDate < $1.fireDate }) {
             var components = Calendar.current.dateComponents(
                 [.year, .month, .day, .hour, .minute],
                 from: candidate.fireDate
@@ -122,6 +124,30 @@ enum TaskReminderManager {
 
             }
         }
+    }
+
+    private static func fairlySelectedCandidates(
+        from groups: [[ReminderCandidate]],
+        limit: Int
+    ) -> [ReminderCandidate] {
+        let orderedGroups = groups
+            .map { $0.sorted(by: { $0.fireDate < $1.fireDate }) }
+            .filter { !$0.isEmpty }
+            .sorted { $0[0].fireDate < $1[0].fireDate }
+
+        var selected: [ReminderCandidate] = []
+        var round = 0
+
+        while selected.count < limit {
+            let nextCandidates = orderedGroups.compactMap { group in
+                group.indices.contains(round) ? group[round] : nil
+            }
+            guard !nextCandidates.isEmpty else { break }
+            selected.append(contentsOf: nextCandidates.prefix(limit - selected.count))
+            round += 1
+        }
+
+        return selected
     }
 
     private static func upcomingTaskReminders(
@@ -227,7 +253,7 @@ enum TaskReminderManager {
             guard weekday == monday else { return nil }
             hour = goalReminderHour
         case "year":
-            guard weekday == monday, dayOfMonth <= 7 else { return nil }
+            guard dayOfMonth == 1 else { return nil }
             hour = goalReminderHour
         default:
             return nil

@@ -108,13 +108,13 @@ struct TodayView: View {
                             .background(
                                 isSelected
                                     ? (isToday
-                                        ? Color("brown")
-                                        : Color("brown").opacity(0.18))
+                                        ? Color("brandOrange")
+                                        : Color("brandOrange").opacity(0.18))
                                     : Color.clear,
                                 in: RoundedRectangle(cornerRadius: 12)
                             )
                             .foregroundStyle(
-                                isSelected && isToday ? Color.white : Color("brown")
+                                isSelected && isToday ? Color.white : Color("brandOrange")
                             )
                         }
                         .buttonStyle(.plain)
@@ -134,7 +134,7 @@ struct TodayView: View {
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
                             .foregroundStyle(.white)
                             .frame(width: 44, height: 44)
-                            .background(Color("brown"), in: Circle())
+                            .background(Color("brandOrange"), in: Circle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Add Task")
@@ -164,6 +164,7 @@ struct TodayView: View {
                                     in: modelContext
                                 )
                                 try? modelContext.save()
+                                WidgetSnapshotWriter.refresh(in: modelContext)
                                 Task {
                                     await TaskReminderManager.refresh(
                                         in: modelContext,
@@ -176,8 +177,8 @@ struct TodayView: View {
                                       ? "checkmark.square.fill" : "square")
                                     .symbolRenderingMode(.palette)
                                     .foregroundStyle(
-                                        task.isCompleted(on: selectedDate) ? Color.white : Color("brown"),
-                                        Color("brown")
+                                        task.isCompleted(on: selectedDate) ? Color.white : Color("brandOrange"),
+                                        Color("brandOrange")
                                     )
                                     .font(.system(size: 26, weight: .regular))
                                     .frame(width: 44, height: 44)
@@ -189,7 +190,7 @@ struct TodayView: View {
                             Text(task.title)
                                 .font(.headline)
                                 .strikethrough(task.isCompleted(on: selectedDate))
-                                .foregroundStyle(task.isCompleted(on: selectedDate) ? Color("brown") : Color.primary)
+                                .foregroundStyle(task.isCompleted(on: selectedDate) ? Color("brandOrange") : Color.primary)
                             
                             Spacer()
                             
@@ -212,7 +213,7 @@ struct TodayView: View {
                             } label: {
                                 Label("Edit", systemImage: "pencil")
                             }
-                            .tint(Color("brown"))
+                            .tint(Color("brandOrange"))
                         }
                     }
                 }
@@ -231,6 +232,7 @@ struct TodayView: View {
                     modelContext.delete(task)
                 }
                 try? modelContext.save()
+                WidgetSnapshotWriter.refresh(in: modelContext)
                 Task {
                     await TaskReminderManager.refresh(
                         in: modelContext,

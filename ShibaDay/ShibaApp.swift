@@ -42,11 +42,13 @@ struct shibaApp: App {
                 if hasCompletedWelcome {
                     ContentView()
                         .task {
+                            WidgetSnapshotWriter.refresh(in: sharedModelContainer.mainContext)
                             await refreshReminders()
                         }
                         .onChange(of: scenePhase) { _, phase in
                             guard phase == .active else { return }
                             Task {
+                                WidgetSnapshotWriter.refresh(in: sharedModelContainer.mainContext)
                                 await refreshReminders()
                             }
                         }

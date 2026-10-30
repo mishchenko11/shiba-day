@@ -6,11 +6,64 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FA0279D8308C002B00199742 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0279D7308C002B00199742 /* WidgetKit.framework */; };
+		FA0279DA308C002B00199742 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0279D9308C002B00199742 /* SwiftUI.framework */; };
+		FA0279E5308C002D00199742 /* ShibaDayWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA0279D5308C002B00199742 /* ShibaDayWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FA0279E3308C002D00199742 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA4DFEF8305C47DE0075063C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA0279D4308C002B00199742;
+			remoteInfo = ShibaDayWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FA0279E6308C002D00199742 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FA0279E5308C002D00199742 /* ShibaDayWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		B17A8E13C0424A6CA1F32001 /* ShibaDay-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShibaDay-Info.plist"; sourceTree = "<group>"; };
+		FA0279D5308C002B00199742 /* ShibaDayWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShibaDayWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA0279D7308C002B00199742 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		FA0279D9308C002B00199742 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FA0279EC308C032C00199742 /* ShibaDayWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShibaDayWidgetExtension.entitlements; sourceTree = "<group>"; };
 		FA4DFF00305C47DF0075063C /* ShibaDay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShibaDay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FA0279E9308C002D00199742 /* Exceptions for "ShibaDayWidget" folder in "ShibaDayWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FA0279D4308C002B00199742 /* ShibaDayWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		FA0279DB308C002B00199742 /* ShibaDayWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FA0279E9308C002D00199742 /* Exceptions for "ShibaDayWidget" folder in "ShibaDayWidgetExtension" target */,
+			);
+			path = ShibaDayWidget;
+			sourceTree = "<group>";
+		};
 		FA4DFF02305C47DF0075063C /* ShibaDay */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ShibaDay;
@@ -19,6 +72,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FA0279D2308C002B00199742 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA0279DA308C002B00199742 /* SwiftUI.framework in Frameworks */,
+				FA0279D8308C002B00199742 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA4DFEFD305C47DE0075063C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -29,10 +91,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA0279D6308C002B00199742 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FA0279D7308C002B00199742 /* WidgetKit.framework */,
+				FA0279D9308C002B00199742 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FA4DFEF7305C47DE0075063C = {
 			isa = PBXGroup;
 			children = (
+				FA0279EC308C032C00199742 /* ShibaDayWidgetExtension.entitlements */,
+				B17A8E13C0424A6CA1F32001 /* ShibaDay-Info.plist */,
 				FA4DFF02305C47DF0075063C /* ShibaDay */,
+				FA0279DB308C002B00199742 /* ShibaDayWidget */,
+				FA0279D6308C002B00199742 /* Frameworks */,
 				FA4DFF01305C47DF0075063C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				FA4DFF00305C47DF0075063C /* ShibaDay.app */,
+				FA0279D5308C002B00199742 /* ShibaDayWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +124,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FA0279D4308C002B00199742 /* ShibaDayWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA0279EA308C002D00199742 /* Build configuration list for PBXNativeTarget "ShibaDayWidgetExtension" */;
+			buildPhases = (
+				FA0279D1308C002B00199742 /* Sources */,
+				FA0279D2308C002B00199742 /* Frameworks */,
+				FA0279D3308C002B00199742 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FA0279DB308C002B00199742 /* ShibaDayWidget */,
+			);
+			name = ShibaDayWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = ShibaDayWidgetExtension;
+			productReference = FA0279D5308C002B00199742 /* ShibaDayWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		FA4DFEFF305C47DE0075063C /* ShibaDay */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA4DFF0D305C47E00075063C /* Build configuration list for PBXNativeTarget "ShibaDay" */;
@@ -55,10 +153,12 @@
 				FA4DFEFC305C47DE0075063C /* Sources */,
 				FA4DFEFD305C47DE0075063C /* Frameworks */,
 				FA4DFEFE305C47DE0075063C /* Resources */,
+				FA0279E6308C002D00199742 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FA0279E4308C002D00199742 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FA4DFF02305C47DF0075063C /* ShibaDay */,
@@ -80,6 +180,9 @@
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
+					FA0279D4308C002B00199742 = {
+						CreatedOnToolsVersion = 26.6;
+					};
 					FA4DFEFF305C47DE0075063C = {
 						CreatedOnToolsVersion = 26.6;
 					};
@@ -100,11 +203,19 @@
 			projectRoot = "";
 			targets = (
 				FA4DFEFF305C47DE0075063C /* ShibaDay */,
+				FA0279D4308C002B00199742 /* ShibaDayWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FA0279D3308C002B00199742 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA4DFEFE305C47DE0075063C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +226,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FA0279D1308C002B00199742 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA4DFEFC305C47DE0075063C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +242,79 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		FA0279E4308C002D00199742 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA0279D4308C002B00199742 /* ShibaDayWidgetExtension */;
+			targetProxy = FA0279E3308C002D00199742 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		FA0279E7308C002D00199742 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ShibaDayWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S7858Z7837;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShibaDayWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShibaDayWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eireneapps.shibaday.ShibaDayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA0279E8308C002D00199742 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ShibaDayWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S7858Z7837;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShibaDayWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShibaDayWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eireneapps.shibaday.ShibaDayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		FA4DFF0B305C47E00075063C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -178,7 +368,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -236,7 +426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -251,17 +441,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ShibaDay/ShibaDay.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S7858Z7837;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ShibaDay-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Shiba Day";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -284,17 +477,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ShibaDay/ShibaDay.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S7858Z7837;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ShibaDay-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Shiba Day";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,6 +511,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FA0279EA308C002D00199742 /* Build configuration list for PBXNativeTarget "ShibaDayWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA0279E7308C002D00199742 /* Debug */,
+				FA0279E8308C002D00199742 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FA4DFEFB305C47DE0075063C /* Build configuration list for PBXProject "ShibaDay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -19,7 +19,7 @@ struct WelcomeView: View {
                     design: .rounded
                 ))
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color("brown"))
+                .foregroundStyle(Color("brandOrange"))
                 .accessibilityAddTraits(.isHeader)
             
             
@@ -35,7 +35,7 @@ struct WelcomeView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 54)
-                    .background(Color("brown"), in: Capsule())
+                    .background(Color("brandOrange"), in: Capsule())
             }
             .buttonStyle(.plain)
             .accessibilityHint("Opens your daily planner")

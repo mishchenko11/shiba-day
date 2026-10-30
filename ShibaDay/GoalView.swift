@@ -14,7 +14,18 @@ struct GoalView: View {
     @State private var showingCompleted = false
 
     private var visibleGoals: [GoalItem] {
-        goals.filter { $0.isCompleted == showingCompleted }
+        goals
+            .filter { $0.isCompleted == showingCompleted }
+            .sorted {
+                let firstPeriodOrder = periodOrder($0.period)
+                let secondPeriodOrder = periodOrder($1.period)
+
+                if firstPeriodOrder != secondPeriodOrder {
+                    return firstPeriodOrder < secondPeriodOrder
+                }
+
+                return $0.title.localizedStandardCompare($1.title) == .orderedAscending
+            }
     }
 
     var body: some View {
@@ -25,7 +36,7 @@ struct GoalView: View {
                     goalFilterButton("Completed", isCompleted: true)
                 }
                 .padding(4)
-                .background(Color("brown").opacity(0.12), in: Capsule())
+                .background(Color("brandOrange").opacity(0.12), in: Capsule())
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
 
@@ -70,7 +81,7 @@ struct GoalView: View {
                         } label: {
                             Label("Edit", systemImage: "pencil")
                         }
-                        .tint(Color("brown"))
+                        .tint(Color("brandOrange"))
                     }
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
@@ -94,7 +105,7 @@ struct GoalView: View {
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
                             .foregroundStyle(.white)
                             .frame(width: 44, height: 44)
-                            .background(Color("brown"), in: Circle())
+                            .background(Color("brandOrange"), in: Circle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Add Goal")
@@ -137,7 +148,7 @@ struct GoalView: View {
         } label: {
             Text(title)
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(isSelected ? Color("brown") : Color.primary)
+                .foregroundStyle(isSelected ? Color("brandOrange") : Color.primary)
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
                 .background(isSelected ? Color(uiColor: .secondarySystemBackground) : Color.clear, in: Capsule())
@@ -146,9 +157,20 @@ struct GoalView: View {
         .buttonStyle(.plain)
     }
 
+    private func periodOrder(_ period: String) -> Int {
+        switch period.lowercased() {
+        case "day": 0
+        case "week": 1
+        case "month": 2
+        case "year": 3
+        default: 4
+        }
+    }
+
     @MainActor
     private func refreshRemindersAfterGoalChange() {
         try? modelContext.save()
+        WidgetSnapshotWriter.refresh(in: modelContext)
         Task {
             await TaskReminderManager.refresh(
                 in: modelContext,
@@ -165,7 +187,7 @@ private struct GoalRow: View {
     let onProgressChange: () -> Void
 
     private var goalColor: Color {
-        Color("green")
+        Color("goalGreen")
     }
 
     var body: some View {

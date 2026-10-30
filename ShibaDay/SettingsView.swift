@@ -31,16 +31,12 @@ struct SettingsView: View {
                                         symbol: appTheme.symbol,
                                         showsChevron: true
                                     )
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 8)
+                                    .contentShape(Rectangle())
                                 }
                                 .buttonStyle(.plain)
-
-                                settingsDivider
-
-                                SettingsRow(title: "App Icon", subtitle: "Default", symbol: "app.fill")
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
                             }
                         }
 
@@ -94,7 +90,7 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
-            .tint(Color("brown"))
+            .tint(Color("brandOrange"))
             .onChange(of: taskRemindersEnabled) { _, _ in
                 Task {
                     await updateReminders()
@@ -113,7 +109,7 @@ struct SettingsView: View {
                 }
                 Button("Not Now", role: .cancel) { }
             } message: {
-                Text("Allow notifications for Bears Up in iPhone Settings to receive task and goal reminders.")
+                Text("Allow notifications for Shiba Day in iPhone Settings to receive task and goal reminders.")
             }
         }
     }
@@ -175,7 +171,7 @@ private struct SettingsGroupCard<Content: View>: View {
                 .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18))
                 .overlay {
                     RoundedRectangle(cornerRadius: 18)
-                        .stroke(Color("brown").opacity(0.18), lineWidth: 1)
+                        .stroke(Color("brandOrange").opacity(0.18), lineWidth: 1)
                 }
                 .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 5)
         }
@@ -193,7 +189,7 @@ private struct SettingsRow: View {
         HStack(spacing: 14) {
             Image(systemName: symbol)
                 .font(.title3)
-                .foregroundStyle(Color("brown"))
+                .foregroundStyle(Color("brandOrange"))
                 .frame(width: 30)
 
             VStack(alignment: .leading, spacing: 4) {
@@ -226,7 +222,7 @@ private struct SettingsToggleRow: View {
             HStack(spacing: 14) {
                 Image(systemName: symbol)
                     .font(.title3)
-                    .foregroundStyle(Color("brown"))
+                    .foregroundStyle(Color("brandOrange"))
                     .frame(width: 30)
 
                 VStack(alignment: .leading, spacing: 4) {
@@ -238,7 +234,7 @@ private struct SettingsToggleRow: View {
                 }
             }
         }
-        .tint(Color("brown"))
+        .tint(Color("brandOrange"))
         .padding(.vertical, 4)
     }
 }

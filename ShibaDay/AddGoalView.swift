@@ -11,6 +11,7 @@ struct AddGoalView: View {
     @State private var targetCount: Int
     @State private var period: String
     @State private var showingSaveError = false
+    @FocusState private var titleFieldFocused: Bool
 
     private let goalToEdit: GoalItem?
     private let periods = ["day", "week", "month", "year"]
@@ -34,7 +35,13 @@ struct AddGoalView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         TextField("What do you want to achieve?", text: $title)
+                            .focused($titleFieldFocused)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(16)
+                            .contentShape(Rectangle())
+                            .simultaneousGesture(
+                                TapGesture().onEnded { titleFieldFocused = true }
+                            )
 
                         Divider()
                             .padding(.leading, 16)
@@ -51,12 +58,14 @@ struct AddGoalView: View {
                             }
                         }
                         .pickerStyle(.menu)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(16)
+                        .contentShape(Rectangle())
                     }
                     .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18))
                     .overlay {
                         RoundedRectangle(cornerRadius: 18)
-                            .stroke(Color("brown").opacity(0.18), lineWidth: 1)
+                            .stroke(Color("brandOrange").opacity(0.18), lineWidth: 1)
                     }
                     .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 5)
                     .padding(.horizontal, 20)
@@ -71,7 +80,7 @@ struct AddGoalView: View {
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 54)
-                        .background(Color("brown"), in: Capsule())
+                        .background(Color("brandOrange"), in: Capsule())
                 }
                 .buttonStyle(.plain)
                 .disabled(isTitleEmpty)
@@ -82,7 +91,7 @@ struct AddGoalView: View {
             }
             .navigationTitle(goalToEdit == nil ? "Add Goal" : "Edit Goal")
             .navigationBarTitleDisplayMode(.inline)
-            .tint(Color("brown"))
+            .tint(Color("brandOrange"))
             .alert("Couldn't save goal", isPresented: $showingSaveError) {
                 Button("OK", role: .cancel) { }
             } message: {
@@ -102,19 +111,17 @@ struct AddGoalView: View {
             goal.targetCount = targetCount
             goal.period = period
         } else {
-            let goalColors = ["green", "purple"]
-            let randomColor = goalColors.randomElement() ?? "purple"
             goal = GoalItem(
                 title: trimmedTitle,
                 targetCount: targetCount,
-                period: period,
-                colorName: randomColor
+                period: period
             )
             modelContext.insert(goal)
         }
 
         do {
             try modelContext.save()
+            WidgetSnapshotWriter.refresh(in: modelContext)
             Task {
                 await TaskReminderManager.refresh(
                     in: modelContext,
