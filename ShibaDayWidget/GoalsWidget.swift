@@ -1,3 +1,4 @@
+import AppIntents
 import SwiftUI
 import WidgetKit
 
@@ -6,6 +7,7 @@ private struct SharedGoalSnapshot: Codable {
 }
 
 private struct SharedGoalItem: Codable {
+    let id: String?
     let title: String
     let currentCount: Int
     let targetCount: Int
@@ -57,11 +59,19 @@ private struct GoalsWidgetEntryView: View {
     private let goalGreen = Color("goalGreen")
 
     private var visibleGoalLimit: Int {
-        widgetFamily == .systemSmall ? 1 : 2
+        switch widgetFamily {
+        case .systemSmall: 1
+        case .systemMedium: 2
+        default: 4
+        }
+    }
+
+    private var allGoals: [SharedGoalItem] {
+        entry.snapshot?.goals ?? []
     }
 
     private var visibleGoals: [SharedGoalItem] {
-        Array((entry.snapshot?.goals ?? []).prefix(visibleGoalLimit))
+        Array(allGoals.prefix(visibleGoalLimit))
     }
 
     var body: some View {
@@ -87,20 +97,20 @@ private struct GoalsWidgetEntryView: View {
             if let snapshot = entry.snapshot {
                 if snapshot.goals.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("No active goals")
-                            .font(.subheadline.weight(.semibold))
+                        Text("No goals yet")
+                            .font(.subheadline)
                         Text("Create a goal in Shiba Day.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 } else {
                     ForEach(visibleGoals.indices, id: \.self) { index in
                         goalCard(visibleGoals[index])
                     }
 
-                    if snapshot.goals.count > visibleGoals.count {
-                        Text("+\(snapshot.goals.count - visibleGoals.count) more")
+                    if allGoals.count > visibleGoals.count {
+                        Text("+\(allGoals.count - visibleGoals.count) more")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -109,11 +119,12 @@ private struct GoalsWidgetEntryView: View {
                 Text("Open Shiba Day to load your goals.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .containerBackground(.fill.tertiary, for: .widget)
         .widgetURL(URL(string: "shibaday://goals"))
     }
@@ -131,26 +142,41 @@ private struct GoalsWidgetEntryView: View {
 
                 Spacer(minLength: 0)
 
-                Text(widgetFamily == .systemSmall
-                    ? "\(goal.currentCount) / \(goal.targetCount)"
-                    : "\(goal.currentCount)/\(goal.targetCount) · \(goal.period)")
+                Text("\(goal.currentCount)/\(goal.targetCount) · \(goal.period)")
                     .font(.caption.weight(.medium))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
             }
 
-            ProgressView(value: Double(progress), total: Double(target))
-                .tint(goalGreen)
+            HStack(spacing: 8) {
+                ProgressView(value: Double(progress), total: Double(target))
+                    .tint(goalGreen)
 
-            if widgetFamily == .systemSmall {
-                Text("\(goal.targetCount) per \(goal.period)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                if let goalID = goal.id {
+                    Button(intent: ChangeGoalProgressIntent(goalID: goalID, amount: -1)) {
+                        Image(systemName: "minus.circle")
+                            .font(.system(size: 19, weight: .medium))
+                            .frame(width: 26, height: 26)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(goal.currentCount == 0)
+                    .foregroundStyle(goalGreen)
+                    .accessibilityLabel("Decrease progress for \(goal.title)")
+
+                    Button(intent: ChangeGoalProgressIntent(goalID: goalID, amount: 1)) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 19, weight: .medium))
+                            .frame(width: 26, height: 26)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(goal.currentCount >= target)
+                    .foregroundStyle(goalGreen)
+                    .accessibilityLabel("Increase progress for \(goal.title)")
+                }
             }
         }
-        .padding(widgetFamily == .systemSmall ? 9 : 7)
+        .padding(.vertical, 3)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
@@ -163,8 +189,8 @@ struct ShibaDayGoalsWidget: Widget {
             GoalsWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("My Goals")
-        .description("Track progress toward your active goals.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .description("Review goals and adjust progress from your Home Screen.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }
 }
@@ -172,8 +198,8 @@ struct ShibaDayGoalsWidget: Widget {
 private extension SharedGoalSnapshot {
     static var sample: SharedGoalSnapshot {
         SharedGoalSnapshot(goals: [
-            SharedGoalItem(title: "Read books", currentCount: 1, targetCount: 2, period: "month"),
-            SharedGoalItem(title: "Work out", currentCount: 1, targetCount: 3, period: "week")
+            SharedGoalItem(id: nil, title: "Read books", currentCount: 1, targetCount: 2, period: "month"),
+            SharedGoalItem(id: nil, title: "Work out", currentCount: 1, targetCount: 3, period: "week")
         ])
     }
 }

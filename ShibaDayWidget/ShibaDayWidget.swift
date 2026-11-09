@@ -3,6 +3,7 @@
 //  ShibaDayWidget
 //
 
+import AppIntents
 import SwiftUI
 import WidgetKit
 
@@ -18,6 +19,7 @@ private struct SharedTaskSnapshot: Codable {
 }
 
 private struct SharedTaskItem: Codable {
+    let id: String?
     let title: String
     let time: String?
     let isCompleted: Bool
@@ -103,37 +105,39 @@ private struct ShibaDayWidgetEntryView: View {
 
             if let snapshot = entry.snapshot {
                 if snapshot.tasks.isEmpty {
-                    Text("No tasks planned for today.")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                } else if remainingTaskCount == 0 {
-                    Text("Everything is done. Nice work!")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("No task for today")
+                            .font(.subheadline)
+                        Text("Create a task in Shiba Day.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 } else {
                     let visibleTasks = Array(snapshot.tasks.prefix(visibleTaskLimit))
                     ForEach(visibleTasks.indices, id: \.self) { index in
                         let task = visibleTasks[index]
-                        HStack(spacing: 6) {
-                            Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                                .foregroundStyle(task.isCompleted ? brandOrange.opacity(0.55) : brandOrange)
-
-                            Text(task.title)
-                                .lineLimit(1)
-                                .strikethrough(task.isCompleted)
-                                .foregroundStyle(task.isCompleted ? .secondary : .primary)
-
-                            Spacer(minLength: 0)
-
-                            if let time = task.time {
-                                Text(time)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                        if let taskID = task.id {
+                            Toggle(
+                                isOn: task.isCompleted,
+                                intent: ToggleTaskCompletionIntent(taskID: taskID, day: snapshot.day)
+                            ) {
+                                Text(task.title)
                             }
+                            .toggleStyle(WidgetTaskToggleStyle(
+                                brandOrange: brandOrange,
+                                title: task.title,
+                                time: task.time
+                            ))
+                        } else {
+                            HStack(spacing: 6) {
+                                Image(systemName: task.isCompleted ? "checkmark.square.fill" : "square")
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(task.isCompleted ? Color.white : brandOrange, brandOrange)
+                                taskLabel(task)
+                            }
+                            .font(.subheadline)
                         }
-                        .font(.subheadline)
                     }
 
                     if snapshot.tasks.count > visibleTasks.count {
@@ -146,13 +150,66 @@ private struct ShibaDayWidgetEntryView: View {
                 Text("Open Shiba Day to load today's tasks.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .containerBackground(.fill.tertiary, for: .widget)
         .widgetURL(URL(string: "shibaday://today"))
+    }
+
+    private func taskLabel(_ task: SharedTaskItem) -> some View {
+        HStack(spacing: 6) {
+            Text(task.title)
+                .lineLimit(1)
+                .strikethrough(task.isCompleted)
+                .foregroundStyle(task.isCompleted ? brandOrange : .primary)
+
+            Spacer(minLength: 0)
+
+            if let time = task.time {
+                Text(time)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .font(.subheadline)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct WidgetTaskToggleStyle: ToggleStyle {
+    let brandOrange: Color
+    let title: String
+    let time: String?
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(configuration.isOn ? Color.white : brandOrange, brandOrange)
+
+            Text(title)
+                .lineLimit(1)
+                .strikethrough(configuration.isOn)
+                .foregroundStyle(configuration.isOn ? brandOrange : .primary)
+
+            Spacer(minLength: 0)
+
+            if let time {
+                Text(time)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .font(.subheadline)
+        .accessibilityLabel(title)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            configuration.$isOn.wrappedValue.toggle()
+        }
     }
 }
 
@@ -175,8 +232,8 @@ private extension SharedTaskSnapshot {
         SharedTaskSnapshot(
             day: Calendar.current.startOfDay(for: .now),
             tasks: [
-                SharedTaskItem(title: "Read a chapter", time: nil, isCompleted: false),
-                SharedTaskItem(title: "Take a walk", time: "5:00 PM", isCompleted: true)
+                SharedTaskItem(id: nil, title: "Read a chapter", time: nil, isCompleted: false),
+                SharedTaskItem(id: nil, title: "Take a walk", time: "5:00 PM", isCompleted: true)
             ]
         )
     }

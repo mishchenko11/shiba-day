@@ -3,6 +3,7 @@ import SwiftData
 
 @Model
 final class GoalItem {
+    var widgetID: String?
     var title: String
     var targetCount: Int
     var currentCount: Int
@@ -13,7 +14,15 @@ final class GoalItem {
         currentCount >= targetCount
     }
 
-    init(title: String, targetCount: Int, currentCount: Int = 0, period: String, colorName: String? = nil) {
+    init(
+        title: String,
+        targetCount: Int,
+        currentCount: Int = 0,
+        period: String,
+        colorName: String? = nil,
+        widgetID: String? = UUID().uuidString
+    ) {
+        self.widgetID = widgetID
         self.title = title
         self.targetCount = targetCount
         self.currentCount = currentCount

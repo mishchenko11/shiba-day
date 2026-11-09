@@ -16,76 +16,74 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-
-                ScrollView {
-                    VStack(spacing: 20) {
-                        SettingsGroupCard(title: "Appearance") {
-                            VStack(spacing: 0) {
-                                NavigationLink {
-                                    AppearanceSettingsView(selection: $appTheme)
-                                } label: {
-                                    SettingsRow(
-                                        title: "Theme",
-                                        subtitle: appTheme.rawValue,
-                                        symbol: appTheme.symbol,
-                                        showsChevron: true
-                                    )
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
-                                    .contentShape(Rectangle())
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-
-                        SettingsGroupCard(title: "Notifications") {
-                            VStack(spacing: 0) {
-                                SettingsToggleRow(
-                                    title: "Reminders",
-                                    subtitle: "1 hour before timed tasks; 8:00 AM without a time",
-                                    symbol: "bell",
-                                    isOn: $taskRemindersEnabled
-                                )
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-
-                                settingsDivider
-
-                                SettingsToggleRow(
-                                    title: "Goals",
-                                    subtitle: "A gentle reminder based on each goal's period",
-                                    symbol: "target",
-                                    isOn: $goalRemindersEnabled
-                                )
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                            }
-                        }
-
-                        SettingsGroupCard(title: "About") {
-                            VStack(spacing: 0) {
-                                SettingsRow(title: "Version", subtitle: appVersion, symbol: "info.circle")
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 8)
-
-                                settingsDivider
-
+            ScrollView {
+                VStack(spacing: 20) {
+                    SettingsGroupCard(title: "Appearance") {
+                        VStack(spacing: 0) {
+                            NavigationLink {
+                                AppearanceSettingsView(selection: $appTheme)
+                            } label: {
                                 SettingsRow(
-                                    title: "Send Feedback",
-                                    subtitle: "Share your thoughts",
-                                    symbol: "bubble.left"
+                                    title: "Theme",
+                                    subtitle: appTheme.rawValue,
+                                    symbol: appTheme.symbol,
+                                    showsChevron: true
                                 )
+                                .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 8)
+                                .contentShape(Rectangle())
                             }
+                            .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
-                    .padding(.bottom, 24)
+
+                    SettingsGroupCard(title: "Notifications") {
+                        VStack(spacing: 0) {
+                            SettingsToggleRow(
+                                title: "Reminders",
+                                subtitle: "1 hour before timed tasks; 8:00 AM without a time",
+                                symbol: "bell",
+                                isOn: $taskRemindersEnabled
+                            )
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+
+                            settingsDivider
+
+                            SettingsToggleRow(
+                                title: "Goals",
+                                subtitle: "A gentle reminder based on each goal's period",
+                                symbol: "target",
+                                isOn: $goalRemindersEnabled
+                            )
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                        }
+                    }
+
+                    SettingsGroupCard(title: "About") {
+                        VStack(spacing: 0) {
+                            SettingsRow(title: "Version", subtitle: appVersion, symbol: "info.circle")
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+
+                            settingsDivider
+
+                            SettingsRow(
+                                title: "Send Feedback",
+                                subtitle: "Share your thoughts",
+                                symbol: "bubble.left",
+                                isDisabled: true
+                            )
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                        }
+                    }
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .padding(.bottom, 24)
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -122,6 +120,10 @@ struct SettingsView: View {
 
     @MainActor
     private func updateReminders() async {
+        let sharedDefaults = UserDefaults(suiteName: "group.com.eireneapps.shibaday")
+        sharedDefaults?.set(taskRemindersEnabled, forKey: "taskRemindersEnabled")
+        sharedDefaults?.set(goalRemindersEnabled, forKey: "goalRemindersEnabled")
+
         guard taskRemindersEnabled || goalRemindersEnabled else {
             await TaskReminderManager.refresh(
                 in: modelContext,
@@ -184,17 +186,19 @@ private struct SettingsRow: View {
     let subtitle: String
     let symbol: String
     var showsChevron = false
+    var isDisabled = false
 
     var body: some View {
         HStack(spacing: 14) {
             Image(systemName: symbol)
                 .font(.title3)
-                .foregroundStyle(Color("brandOrange"))
+                .foregroundStyle(isDisabled ? Color.secondary : Color("brandOrange"))
                 .frame(width: 30)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.body.weight(.medium))
+                    .foregroundStyle(isDisabled ? Color.secondary : Color.primary)
                 Text(subtitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)

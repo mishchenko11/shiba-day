@@ -10,12 +10,13 @@ import SwiftData
 
 @Model
 final class TaskItem {
+    var widgetID: String?
     var title: String
     var date: Date
     var time: Date?
     var isCompleted: Bool
     var repeatRule: String?
-    // Kept for compatibility with existing SwiftData stores; reminders now use fixed app rules.
+
     var reminderMinutesBefore: Int?
     @Relationship(deleteRule: .cascade, inverse: \TaskCompletion.task)
     var completions: [TaskCompletion] = []
@@ -25,8 +26,10 @@ final class TaskItem {
          time: Date? = nil,
          isCompleted: Bool = false,
          repeatRule: String? = "never",
-         reminderMinutesBefore: Int? = nil
+         reminderMinutesBefore: Int? = nil,
+         widgetID: String? = UUID().uuidString
     ) {
+        self.widgetID = widgetID
         self.title = title
         self.date = date
         self.time = time

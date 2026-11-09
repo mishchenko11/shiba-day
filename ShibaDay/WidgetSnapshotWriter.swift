@@ -2,8 +2,6 @@ import Foundation
 import SwiftData
 import WidgetKit
 
-/// Publishes read-only task and goal snapshots for the widgets.
-/// SwiftData remains the source of truth in the main app.
 @MainActor
 enum WidgetSnapshotWriter {
     private static let appGroupIdentifier = "group.com.eireneapps.shibaday"
@@ -17,17 +15,32 @@ enum WidgetSnapshotWriter {
 
         do {
             let allTasks = try modelContext.fetch(FetchDescriptor<TaskItem>())
+            var assignedWidgetID = false
             let today = Calendar.current.startOfDay(for: Date())
             let todaysTasks = allTasks
                 .filter { $0.occurs(on: today) }
                 .sorted { ($0.time ?? $0.date) < ($1.time ?? $1.date) }
                 .map { task in
-                    WidgetTaskSnapshotItem(
+                    let id: String
+                    if let existingID = task.widgetID {
+                        id = existingID
+                    } else {
+                        id = UUID().uuidString
+                        task.widgetID = id
+                        assignedWidgetID = true
+                    }
+
+                    return WidgetTaskSnapshotItem(
+                        id: id,
                         title: task.title,
                         time: task.time?.formatted(date: .omitted, time: .shortened),
                         isCompleted: task.isCompleted(on: today)
                     )
                 }
+
+            if assignedWidgetID {
+                try modelContext.save()
+            }
 
             let snapshot = WidgetTaskSnapshot(day: today, tasks: todaysTasks)
             let data = try JSONEncoder().encode(snapshot)
@@ -39,7 +52,8 @@ enum WidgetSnapshotWriter {
 
         do {
             let allGoals = try modelContext.fetch(FetchDescriptor<GoalItem>())
-            let activeGoals = allGoals
+            var assignedWidgetID = false
+            let goalsForWidget = allGoals
                 .filter { !$0.isCompleted }
                 .sorted {
                     let firstPeriodOrder = periodOrder($0.period)
@@ -52,7 +66,17 @@ enum WidgetSnapshotWriter {
                     return $0.title.localizedStandardCompare($1.title) == .orderedAscending
                 }
                 .map { goal in
-                    WidgetGoalSnapshotItem(
+                    let id: String
+                    if let existingID = goal.widgetID {
+                        id = existingID
+                    } else {
+                        id = UUID().uuidString
+                        goal.widgetID = id
+                        assignedWidgetID = true
+                    }
+
+                    return WidgetGoalSnapshotItem(
+                        id: id,
                         title: goal.title,
                         currentCount: goal.currentCount,
                         targetCount: goal.targetCount,
@@ -60,7 +84,11 @@ enum WidgetSnapshotWriter {
                     )
                 }
 
-            let snapshot = WidgetGoalSnapshot(goals: activeGoals)
+            if assignedWidgetID {
+                try modelContext.save()
+            }
+
+            let snapshot = WidgetGoalSnapshot(goals: goalsForWidget)
             let data = try JSONEncoder().encode(snapshot)
             sharedDefaults.set(data, forKey: goalSnapshotKey)
             WidgetCenter.shared.reloadTimelines(ofKind: goalWidgetKind)
@@ -80,13 +108,13 @@ enum WidgetSnapshotWriter {
     }
 }
 
-// Keep these Codable fields in sync with the widget extension's matching payload types.
 private struct WidgetTaskSnapshot: Codable {
     let day: Date
     let tasks: [WidgetTaskSnapshotItem]
 }
 
 private struct WidgetTaskSnapshotItem: Codable {
+    let id: String
     let title: String
     let time: String?
     let isCompleted: Bool
@@ -97,6 +125,7 @@ private struct WidgetGoalSnapshot: Codable {
 }
 
 private struct WidgetGoalSnapshotItem: Codable {
+    let id: String
     let title: String
     let currentCount: Int
     let targetCount: Int

@@ -7,12 +7,10 @@
 
 import SwiftUI
 
-enum AppAppearance: String, CaseIterable, Identifiable {
+enum AppAppearance: String, CaseIterable {
     case system = "System"
     case light = "Light"
     case dark = "Dark"
-
-    var id: String { rawValue }
 
     var colorScheme: ColorScheme? {
         switch self {

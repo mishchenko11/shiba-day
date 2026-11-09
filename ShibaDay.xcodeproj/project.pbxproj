@@ -10,6 +10,15 @@
 		FA0279D8308C002B00199742 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0279D7308C002B00199742 /* WidgetKit.framework */; };
 		FA0279DA308C002B00199742 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0279D9308C002B00199742 /* SwiftUI.framework */; };
 		FA0279E5308C002D00199742 /* ShibaDayWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA0279D5308C002B00199742 /* ShibaDayWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A86C210D8935434E88D13201 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13201 /* TaskItem.swift */; };
+		A86C210D8935434E88D13202 /* GoalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13202 /* GoalItem.swift */; };
+		A86C210D8935434E88D13203 /* WidgetSnapshotWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13203 /* WidgetSnapshotWriter.swift */; };
+		A86C210D8935434E88D13204 /* TaskReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13204 /* TaskReminderManager.swift */; };
+		A86C210D8935434E88D13205 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13205 /* AppIntents.framework */; };
+		A86C210D8935434E88D13206 /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13206 /* SwiftData.framework */; };
+		A86C210D8935434E88D13207 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13207 /* UserNotifications.framework */; };
+		A86C210D8935434E88D13208 /* WidgetActionIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13208 /* WidgetActionIntents.swift */; };
+		A86C210D8935434E88D13209 /* AppIntents.framework in App Frameworks */ = {isa = PBXBuildFile; fileRef = B86C210D8935434E88D13205 /* AppIntents.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +52,14 @@
 		FA0279D9308C002B00199742 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FA0279EC308C032C00199742 /* ShibaDayWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShibaDayWidgetExtension.entitlements; sourceTree = "<group>"; };
 		FA4DFF00305C47DF0075063C /* ShibaDay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShibaDay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B86C210D8935434E88D13201 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShibaDay/TaskItem.swift; sourceTree = SOURCE_ROOT; };
+		B86C210D8935434E88D13202 /* GoalItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShibaDay/GoalItem.swift; sourceTree = SOURCE_ROOT; };
+		B86C210D8935434E88D13203 /* WidgetSnapshotWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShibaDay/WidgetSnapshotWriter.swift; sourceTree = SOURCE_ROOT; };
+		B86C210D8935434E88D13204 /* TaskReminderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShibaDay/TaskReminderManager.swift; sourceTree = SOURCE_ROOT; };
+		B86C210D8935434E88D13205 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
+		B86C210D8935434E88D13206 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
+		B86C210D8935434E88D13207 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		B86C210D8935434E88D13208 /* WidgetActionIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShibaDayWidget/WidgetActionIntents.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -78,6 +95,9 @@
 			files = (
 				FA0279DA308C002B00199742 /* SwiftUI.framework in Frameworks */,
 				FA0279D8308C002B00199742 /* WidgetKit.framework in Frameworks */,
+				A86C210D8935434E88D13205 /* AppIntents.framework in Frameworks */,
+				A86C210D8935434E88D13206 /* SwiftData.framework in Frameworks */,
+				A86C210D8935434E88D13207 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A86C210D8935434E88D13209 /* AppIntents.framework in App Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +117,9 @@
 			children = (
 				FA0279D7308C002B00199742 /* WidgetKit.framework */,
 				FA0279D9308C002B00199742 /* SwiftUI.framework */,
+				B86C210D8935434E88D13205 /* AppIntents.framework */,
+				B86C210D8935434E88D13206 /* SwiftData.framework */,
+				B86C210D8935434E88D13207 /* UserNotifications.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -230,6 +254,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A86C210D8935434E88D13201 /* TaskItem.swift in Sources */,
+				A86C210D8935434E88D13202 /* GoalItem.swift in Sources */,
+				A86C210D8935434E88D13203 /* WidgetSnapshotWriter.swift in Sources */,
+				A86C210D8935434E88D13204 /* TaskReminderManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A86C210D8935434E88D13208 /* WidgetActionIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

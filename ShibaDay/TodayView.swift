@@ -62,11 +62,11 @@ struct TodayView: View {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: selectedDate)
         let daysFromMonday = (weekday + 5) % 7
-        let monday = calendar.date(
+        guard let monday = calendar.date(
             byAdding: .day,
             value: -daysFromMonday,
             to: selectedDate
-        )!
+        ) else { return [] }
         
         return (0..<7).compactMap { dayOffset in
             calendar.date(byAdding: .day, value: dayOffset, to: monday)
@@ -156,7 +156,7 @@ struct TodayView: View {
                         .frame(height: 340, alignment: .center)
                     }
                     ForEach(todayTasks) { task in
-                        HStack() {
+                        HStack {
                             Button {
                                 task.setCompleted(
                                     !task.isCompleted(on: selectedDate),
